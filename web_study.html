@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HTML5 · CSS3 · JavaScript 학습 페이지</title>
+
+  <!-- ===== CSS3 학습 영역 ===== -->
+  <style>
+    /* ── 1. CSS 변수 (Custom Properties) ── */
+    :root {
+      --primary:   #4f46e5;
+      --secondary: #06b6d4;
+      --accent:    #f59e0b;
+      --bg:        #0f172a;
+      --surface:   #1e293b;
+      --text:      #e2e8f0;
+      --radius:    12px;
+      --gap:       1.5rem;
+    }
+
+    /* ── 2. 기본 리셋 & 박스 모델 ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* ── 3. Flexbox 헤더 ── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background: var(--surface);
+      border-bottom: 3px solid var(--primary);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    header h1 { font-size: 1.4rem; color: var(--primary); }
+    nav a {
+      color: var(--text);
+      text-decoration: none;
+      margin-left: 1.2rem;
+      font-size: 0.9rem;
+      transition: color 0.3s;   /* CSS3 transition */
+    }
+    nav a:hover { color: var(--secondary); }
+
+    /* ── 4. Grid 메인 레이아웃 ── */
+    main {
+      display: grid;
+      gap: var(--gap);
+      padding: 2rem;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* ── 5. 카드 (그림자 · 둥근 모서리) ── */
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,.4);
+      border: 1px solid #334155;
+    }
+    .card h2 {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--primary);
+      color: var(--secondary);
+    }
+
+    /* ── 6. CSS3 애니메이션 ── */
+    @keyframes pulse {
+      0%, 100% { transform: scale(1);   opacity: 1; }
+      50%       { transform: scale(1.1); opacity: 0.7; }
+    }
+    .badge {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 999px;
+      padding: 0.2rem 0.8rem;
+      font-size: 0.75rem;
+      animation: pulse 2s infinite;
+    }
+
+    /* ── 7. CSS3 그라디언트 배너 ── */
+    .hero {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      text-align: center;
+    }
+    .hero h2 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .hero p  { opacity: 0.9; }
+
+    /* ── 8. 버튼 스타일 ── */
+    button, .btn {
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      padding: 0.5rem 1.2rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.4); }
+
+    .btn-primary   { background: var(--primary);   color: #fff; }
+    .btn-secondary { background: var(--secondary); color: #fff; }
+    .btn-accent    { background: var(--accent);    color: #000; }
+
+    /* ── 9. HTML5 폼 스타일 ── */
+    form { display: flex; flex-direction: column; gap: 0.8rem; }
+    label { font-size: 0.85rem; color: #94a3b8; }
+    input, select, textarea {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      border: 1px solid #475569;
+      background: #0f172a;
+      color: var(--text);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--primary); }
+    .form-row { display: flex; gap: 0.8rem; }
+    .form-row > * { flex: 1; }
+
+    /* ── 10. 진행 바 (CSS3 transition) ── */
+    .progress-wrap {
+      background: #334155;
+      border-radius: 999px;
+      height: 12px;
+      overflow: hidden;
+      margin: 0.4rem 0 0.8rem;
+    }
+    .progress-bar {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      transition: width 0.6s ease;
+      width: 0%;
+    }
+
+    /* ── 11. 탭 컴포넌트 ── */
+    .tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+    .tab-btn {
+      background: #334155;
+      color: var(--text);
+      padding: 0.4rem 1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .tab-btn.active { background: var(--primary); border-color: var(--secondary); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ── 12. 결과 출력창 ── */
+    #output {
+      background: #020617;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      min-height: 80px;
+      white-space: pre-wrap;
+      color: #4ade80;
+    }
+
+    /* ── 13. 색상 박스 (CSS3 filter) ── */
+    .color-boxes { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    .color-box {
+      width: 56px; height: 56px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: filter 0.3s, transform 0.3s;
+    }
+    .color-box:hover { filter: brightness(1.4); transform: rotate(15deg) scale(1.1); }
+
+    /* ── 14. 반응형 (Media Query) ── */
+    @media (max-width: 600px) {
+      header { flex-direction: column; gap: 0.5rem; text-align: center; }
+      .form-row { flex-direction: column; }
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.8rem;
+      color: #475569;
+      border-top: 1px solid #1e293b;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ===== HTML5 시맨틱 태그 학습 ===== -->
+
+  <!-- <header> : 시맨틱 헤더 -->
+  <header>
+    <h1>🎓 Web Study Page</h1>
+    <nav>
+      <!-- <nav> : 시맨틱 내비게이션 -->
+      <a href="#html5-section">HTML5</a>
+      <a href="#css3-section">CSS3</a>
+      <a href="#js-section">JavaScript</a>
+    </nav>
+  </header>
+
+  <!-- <main> : 페이지 주요 콘텐츠 -->
+  <main>
+
+    <!-- 히어로 배너 -->
+    <div class="hero">
+      <h2>HTML5 · CSS3 · JavaScript</h2>
+      <p>세 가지 기술을 한 페이지에서 실습해 보세요 <span class="badge">LIVE</span></p>
+    </div>
+
+    <!-- ════════════════════════════════════
+         섹션 1 : HTML5 주요 태그
+    ════════════════════════════════════ -->
+    <section class="card" id="html5-section">
+      <!-- <section> : 시맨틱 섹션 -->
+      <h2>① HTML5 — 시맨틱 태그 &amp; 폼</h2>
+
+      <!-- <article> 태그 예시 -->
+      <article>
+        <h3>HTML5 시맨틱 태그</h3>
+        <p>
+          <code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>,
+          <code>&lt;main&gt;</code>, <code>&lt;section&gt;</code>,
+          <code>&lt;article&gt;</code>, <code>&lt;aside&gt;</code>,
+          <code>&lt;footer&gt;</code> 등을 사용하면 검색엔진과
+          스크린리더가 구조를 쉽게 이해합니다.
+        </p>
+      </article>
+
+      <hr style="border-color:#334155;margin:1rem 0" />
+
+      <!-- HTML5 폼 요소 -->
+      <h3 style="margin-bottom:.8rem">HTML5 폼 요소 실습</h3>
+      <form id="demo-form" novalidate>
+        <div class="form-row">
+          <div>
+            <label for="fname">이름 (required)</label>
+            <!-- HTML5 required, placeholder, autofocus -->
+            <input type="text" id="fname" name="fname"
+                   placeholder="홍길동" required autofocus />
+          </div>
+          <div>
+            <label for="email">이메일</label>
+            <!-- HTML5 type="email" -->
+            <input type="email" id="email" name="email"
+                   placeholder="example@mail.com" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <label for="age">나이 (18~99)</label>
+            <!-- HTML5 type="number" min/max -->
+            <input type="number" id="age" name="age" min="18" max="99" value="25" />
+          </div>
+          <div>
+            <label for="birth">생년월일</label>
+            <!-- HTML5 type="date" -->
+            <input type="date" id="birth" name="birth" />
+          </div>
+        </div>
+
+        <label for="skill">기술 수준</label>
+        <!-- HTML5 <datalist> -->
+        <input list="skill-list" id="skill" name="skill" placeholder="직접 입력 또는 선택" />
+        <datalist id="skill-list">
+          <option value="HTML5 초급">
+          <option value="CSS3 중급">
+          <option value="JavaScript 고급">
+          <option value="Full-Stack">
+        </datalist>
+
+        <label for="volume">학습 열정 (range)</label>
+        <!-- HTML5 type="range" -->
+        <input type="range" id="volume" name="volume" min="0" max="100" value="70"
+               oninput="document.getElementById('vol-val').textContent=this.value" />
+        <span id="vol-val" style="font-size:.85rem;color:var(--accent)">70</span>%
+
+        <label for="memo">메모</label>
+        <textarea id="memo" name="memo" rows="3"
+                  placeholder="오늘 배운 내용을 메모하세요..."></textarea>
+
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+          <button type="submit" class="btn btn-primary">제출 (submit)</button>
+          <button type="reset"  class="btn btn-secondary">초기화 (reset)</button>
+        </div>
+      </form>
+
+      <!-- HTML5 미디어 / 기타 태그 -->
+      <hr style="border-color:#334155;margin:1rem 0" />
+      <h3 style="margin-bottom:.6rem">기타 HTML5 요소</h3>
+      <p>
+        <mark style="background:var(--accent);color:#000;border-radius:4px;padding:0 4px">
+          &lt;mark&gt; 강조
+        </mark>
+        &nbsp;|&nbsp;
+        <time datetime="2026-03-25">2026년 3월 25일</time>
+        &nbsp;|&nbsp;
+        <details>
+          <summary style="cursor:pointer;color:var(--secondary)">&lt;details&gt; 클릭해서 열기</summary>
+          <p style="margin-top:.4rem;font-size:.85rem">
+            &lt;details&gt;&amp;&lt;summary&gt; — 순수 HTML만으로 아코디언 UI를 만들 수 있습니다.
+          </p>
+        </details>
+      </p>
+
+      <!-- HTML5 progress / meter -->
+      <p style="margin-top:.8rem">
+        HTML5 <code>&lt;progress&gt;</code> :
+        <progress value="65" max="100" style="width:120px;accent-color:var(--primary)"></progress>
+        &nbsp;|&nbsp;
+        <code>&lt;meter&gt;</code> :
+        <meter value="0.7" style="width:120px;accent-color:var(--secondary)"></meter>
+      </p>
+    </section>
+
+    <!-- ════════════════════════════════════
+         섹션 2 : CSS3 시각 효과
+    ════════════════════════════════════ -->
+    <section class="card" id="css3-section">
+      <h2>② CSS3 — 시각 효과 &amp; 애니메이션</h2>
+
+      <!-- 진행 바 -->
+      <h3>CSS3 Transition 진행 바</h3>
+      <p style="font-size:.85rem;margin-bottom:.4rem">버튼을 누를 때마다 값이 변합니다.</p>
+      <div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <button class="btn btn-primary"   onclick="setProgress(25)">25%</button>
+        <button class="btn btn-secondary" onclick="setProgress(55)">55%</button>
+        <button class="btn btn-accent"    onclick="setProgress(90)">90%</button>
+        <button class="btn" style="background:#334155" onclick="setProgress(0)">초기화</button>
+      </div>
+
+      <hr style="border-color:#334155;margin:1rem 0" />
+
+      <!-- CSS3 색상 박스 (filter) -->
+      <h3>CSS3 filter &amp; transform (hover 해보기)</h3>
+      <div class="color-boxes" id="color-boxes">
+        <div class="color-box" style="background:#4f46e5" title="Indigo"></div>
+        <div class="color-box" style="background:#06b6d4" title="Cyan"></div>
+        <div class="color-box" style="background:#f59e0b" title="Amber"></div>
+        <div class="color-box" style="background:#10b981" title="Emerald"></div>
+        <div class="color-box" style="background:#ef4444" title="Red"></div>
+        <div class="color-box" style="background:#8b5cf6" title="Violet"></div>
+      </div>
+
+      <hr style="border-color:#334155;margin:1rem 0" />
+
+      <!-- CSS3 탭 -->
+      <h3>CSS3 + JS 탭 컴포넌트</h3>
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab(this,'tab1')">Flexbox</button>
+        <button class="tab-btn"        onclick="switchTab(this,'tab2')">Grid</button>
+        <button class="tab-btn"        onclick="switchTab(this,'tab3')">Animation</button>
+      </div>
+      <div id="tab1" class="tab-content active">
+        <p><strong>Flexbox</strong> — 1차원(행 또는 열) 레이아웃.<br>
+          <code>display:flex</code> / <code>justify-content</code> /
+          <code>align-items</code> / <code>flex-wrap</code></p>
+      </div>
+      <div id="tab2" class="tab-content">
+        <p><strong>CSS Grid</strong> — 2차원(행 + 열) 레이아웃.<br>
+          <code>display:grid</code> / <code>grid-template-columns</code> /
+          <code>grid-gap</code> / <code>grid-area</code></p>
+      </div>
+      <div id="tab3" class="tab-content">
+        <p><strong>Animation</strong> — <code>@keyframes</code>로 정의하고
+          <code>animation</code> 속기 속성으로 적용.<br>
+          duration · timing-function · delay · iteration-count · direction</p>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════
+         섹션 3 : JavaScript 실습
+    ════════════════════════════════════ -->
+    <section class="card" id="js-section">
+      <h2>③ JavaScript — DOM · 이벤트 · 비동기</h2>
+
+      <!-- JS 버튼 묶음 -->
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem">
+        <button class="btn btn-primary"   onclick="jsDemo1()">✦ DOM 조작</button>
+        <button class="btn btn-secondary" onclick="jsDemo2()">✦ 배열 메서드</button>
+        <button class="btn btn-accent"    onclick="jsDemo3()">✦ 객체 &amp; 구조분해</button>
+        <button class="btn" style="background:#10b981;color:#fff" onclick="jsDemo4()">✦ Promise/async</button>
+        <button class="btn" style="background:#8b5cf6;color:#fff" onclick="jsDemo5()">✦ 클래스</button>
+        <button class="btn" style="background:#ef4444;color:#fff" onclick="clearOutput()">✦ 초기화</button>
+      </div>
+
+      <!-- 출력창 -->
+      <h3 style="margin-bottom:.4rem">출력 결과</h3>
+      <div id="output">← 위 버튼을 클릭하면 결과가 여기 표시됩니다.</div>
+
+      <!-- 간단한 계산기 -->
+      <hr style="border-color:#334155;margin:1rem 0" />
+      <h3 style="margin-bottom:.6rem">간단한 계산기</h3>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
+        <input type="number" id="num1" value="10" style="width:80px" />
+        <select id="op" style="width:60px">
+          <option>+</option><option>-</option>
+          <option>×</option><option>÷</option>
+        </select>
+        <input type="number" id="num2" value="3"  style="width:80px" />
+        <button class="btn btn-primary" onclick="calculate()">=</button>
+        <span id="calc-result" style="font-size:1.3rem;color:var(--accent);min-width:60px"></span>
+      </div>
+
+      <!-- 색상 테마 토글 -->
+      <hr style="border-color:#334155;margin:1rem 0" />
+      <h3 style="margin-bottom:.6rem">이벤트 — 마우스 &amp; 키보드</h3>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <button class="btn btn-primary"   id="click-counter" onclick="countClick(this)">
+          클릭 카운터: 0
+        </button>
+        <button class="btn btn-secondary" onmouseover="this.textContent='마우스 올림!'"
+                                          onmouseout="this.textContent='마우스 이벤트'">
+          마우스 이벤트
+        </button>
+      </div>
+      <p style="font-size:.85rem;margin-top:.6rem;color:#94a3b8">
+        아무 키나 눌러보세요: <span id="key-display" style="color:var(--accent)">—</span>
+      </p>
+    </section>
+
+    <!-- ════════════════════════════════════
+         섹션 4 : Canvas (HTML5)
+    ════════════════════════════════════ -->
+    <section class="card">
+      <h2>④ HTML5 Canvas — 실시간 그래픽</h2>
+      <canvas id="myCanvas" width="600" height="160"
+              style="width:100%;border-radius:8px;background:#020617;cursor:crosshair"
+              onmousemove="drawOnCanvas(event)">
+      </canvas>
+      <p style="font-size:.85rem;margin-top:.5rem;color:#94a3b8">
+        캔버스 위에서 마우스를 움직여 그림을 그려보세요.
+      </p>
+      <button class="btn btn-secondary" style="margin-top:.5rem"
+              onclick="clearCanvas()">캔버스 지우기</button>
+    </section>
+
+  </main>
+
+  <!-- <footer> : 시맨틱 푸터 -->
+  <footer>
+    <p>HTML5 &middot; CSS3 &middot; JavaScript 학습 페이지 &copy; 2026</p>
+  </footer>
+
+
+  <!-- ===== JavaScript 학습 영역 ===== -->
+  <script>
+    'use strict';
+
+    /* ───────────────────────────────────
+       1. 유틸리티
+    ___________________________________ */
+    const out = document.getElementById('output');
+
+    function print(msg) {
+      out.textContent += msg + '\n';
+    }
+
+    function clearOutput() {
+      out.textContent = '';
+    }
+
+    /* ───────────────────────────────────
+       2. HTML5 폼 submit 이벤트
+    ___________________________________ */
+    document.getElementById('demo-form').addEventListener('submit', function (e) {
+      e.preventDefault();   // 기본 동작 막기
+      const data = Object.fromEntries(new FormData(this));
+      clearOutput();
+      print('📝 폼 데이터 (FormData → Object):');
+      print(JSON.stringify(data, null, 2));
+    });
+
+    /* ───────────────────────────────────
+       3. 진행 바 제어
+    ___________________________________ */
+    function setProgress(val) {
+      document.getElementById('pbar').style.width = val + '%';
+    }
+
+    /* ───────────────────────────────────
+       4. 탭 전환
+    ___________________________________ */
+    function switchTab(btn, id) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(id).classList.add('active');
+    }
+
+    /* ───────────────────────────────────
+       5. JS 데모 함수들
+    ___________________________________ */
+
+    // ① DOM 조작
+    function jsDemo1() {
+      clearOutput();
+      print('── DOM 조작 ──');
+
+      // querySelector / createElement / textContent / style
+      const h2 = document.querySelector('#js-section h2');
+      print('querySelector 결과: ' + h2.textContent);
+
+      const el = document.createElement('span');
+      el.textContent = ' ★';
+      el.style.color = 'gold';
+      h2.appendChild(el);
+      print('createElement → appendChild: 제목에 ★ 추가됨');
+
+      // classList
+      document.body.classList.toggle('dark-mode');
+      print('classList.toggle("dark-mode") 실행');
+    }
+
+    // ② 배열 메서드
+    function jsDemo2() {
+      clearOutput();
+      print('── 배열 고차 함수 ──');
+
+      const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+      print('원본: ' + nums);
+
+      const evens  = nums.filter(n => n % 2 === 0);
+      print('filter (짝수): ' + evens);
+
+      const doubled = evens.map(n => n * 2);
+      print('map (×2): ' + doubled);
+
+      const sum = doubled.reduce((acc, n) => acc + n, 0);
+      print('reduce (합계): ' + sum);
+
+      // 스프레드 연산자
+      const merged = [...nums.slice(0,3), 99, ...nums.slice(-3)];
+      print('스프레드 병합: ' + merged);
+
+      // 구조분해 할당
+      const [first, second, ...rest] = nums;
+      print(`구조분해: first=${first}, second=${second}, rest=[${rest}]`);
+    }
+
+    // ③ 객체 & 구조분해
+    function jsDemo3() {
+      clearOutput();
+      print('── 객체 & 구조분해 ──');
+
+      const person = { name: '홍길동', age: 30, job: '개발자', city: '서울' };
+      print('원본 객체: ' + JSON.stringify(person));
+
+      const { name, age, ...etc } = person;
+      print(`구조분해: name="${name}", age=${age}, 나머지=${JSON.stringify(etc)}`);
+
+      // 객체 스프레드로 불변 복사
+      const updated = { ...person, age: 31, city: '부산' };
+      print('스프레드 업데이트: ' + JSON.stringify(updated));
+
+      // 옵셔널 체이닝
+      const user = { profile: { avatar: 'img.png' } };
+      print('옵셔널 체이닝: ' + user?.profile?.avatar);
+      print('없는 속성: '     + user?.settings?.theme ?? '기본값');
+
+      // 단축 속성명
+      const x = 10, y = 20;
+      print('단축 속성명: ' + JSON.stringify({ x, y }));
+    }
+
+    // ④ Promise / async-await
+    function jsDemo4() {
+      clearOutput();
+      print('── Promise & async/await ──');
+
+      function delay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+
+      async function run() {
+        print('비동기 시작...');
+        await delay(500);
+        print('0.5초 후: 첫 번째 작업 완료');
+        await delay(500);
+        print('0.5초 후: 두 번째 작업 완료');
+
+        // Promise.all — 병렬 실행
+        const [a, b] = await Promise.all([
+          delay(300).then(() => '작업A'),
+          delay(200).then(() => '작업B'),
+        ]);
+        print(`Promise.all 병렬: ${a}, ${b}`);
+        print('✅ 모든 비동기 작업 완료!');
+      }
+
+      run();
+    }
+
+    // ⑤ 클래스 (ES6+)
+    function jsDemo5() {
+      clearOutput();
+      print('── ES6 클래스 ──');
+
+      class Animal {
+        #name;   // private 필드
+
+        constructor(name, sound) {
+          this.#name = name;
+          this.sound = sound;
+        }
+
+        speak() {
+          return `${this.#name}: ${this.sound}!`;
+        }
+
+        get name() { return this.#name; }
+      }
+
+      class Dog extends Animal {
+        constructor(name) {
+          super(name, '멍멍');
+          this.tricks = [];
+        }
+
+        learn(trick) {
+          this.tricks.push(trick);
+          return this;   // 메서드 체이닝
+        }
+
+        showTricks() {
+          return `${this.name}의 기술: ${this.tricks.join(', ')}`;
+        }
+      }
+
+      const dog = new Dog('바둑이');
+      print(dog.speak());
+      dog.learn('앉아').learn('손').learn('굴러');
+      print(dog.showTricks());
+      print(`instanceof Dog: ${dog instanceof Dog}`);
+      print(`instanceof Animal: ${dog instanceof Animal}`);
+    }
+
+    /* ───────────────────────────────────
+       6. 간단한 계산기
+    ___________________________________ */
+    function calculate() {
+      const n1 = parseFloat(document.getElementById('num1').value);
+      const n2 = parseFloat(document.getElementById('num2').value);
+      const op = document.getElementById('op').value;
+      let result;
+
+      switch (op) {
+        case '+': result = n1 + n2; break;
+        case '-': result = n1 - n2; break;
+        case '×': result = n1 * n2; break;
+        case '÷': result = n2 !== 0 ? n1 / n2 : '0으로 나눌 수 없음'; break;
+      }
+
+      document.getElementById('calc-result').textContent =
+        typeof result === 'number' ? Math.round(result * 10000) / 10000 : result;
+    }
+
+    /* ───────────────────────────────────
+       7. 클릭 카운터
+    ___________________________________ */
+    let clickCount = 0;
+
+    function countClick(btn) {
+      btn.textContent = `클릭 카운터: ${++clickCount}`;
+    }
+
+    /* ───────────────────────────────────
+       8. 키보드 이벤트
+    ___________________________________ */
+    document.addEventListener('keydown', function (e) {
+      const display = document.getElementById('key-display');
+      display.textContent = `"${e.key}" (code: ${e.code})`;
+    });
+
+    /* ───────────────────────────────────
+       9. HTML5 Canvas — 마우스 드로잉
+    ___________________________________ */
+    const canvas  = document.getElementById('myCanvas');
+    const ctx     = canvas.getContext('2d');
+    let isDrawing = false;
+    let hue       = 0;
+
+    canvas.addEventListener('mousedown', () => isDrawing = true);
+    canvas.addEventListener('mouseup',   () => isDrawing = false);
+    canvas.addEventListener('mouseleave',() => isDrawing = false);
+
+    function drawOnCanvas(e) {
+      if (!isDrawing) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width  / rect.width;
+      const scaleY = canvas.height / rect.height;
+      const x = (e.clientX - rect.left) * scaleX;
+      const y = (e.clientY - rect.top)  * scaleY;
+
+      hue = (hue + 2) % 360;
+      ctx.strokeStyle = `hsl(${hue}, 90%, 60%)`;
+      ctx.lineWidth   = 4;
+      ctx.lineCap     = 'round';
+
+      ctx.lineTo(x, y);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+    }
+
+    function clearCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.beginPath();
+    }
+  </script>
+</body>
+</html>
