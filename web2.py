@@ -24,7 +24,7 @@ for i in range(0, 10):
     lst = soup.find_all("span", attrs={"data-role":"list-title-text"})
     for tag in lst:
         title = tag.text.strip()
-        if re.search("아이패드", title):
+        if re.search("아이폰", title):
             print(title)
             f.write(title + "\n") #파일에 쓰기 
 
